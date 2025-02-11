@@ -35,7 +35,7 @@ struct MenuView: View {
                     
                     HStack {
                         NavigationLink {
-                            // PlayView()
+                             PlayView()
                         } label: {
                             Image(.playCard)
                                 .resizable()

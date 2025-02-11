@@ -25,7 +25,6 @@ final class GameViewModel: ObservableObject {
     
     // MARK: - Game Setup
     private func setupLevel() {
-        // Reset grid
         var grid = [[Cell]]()
         for row in 0..<GameConstants.gridRows {
             var rowCells = [Cell]()
@@ -34,17 +33,14 @@ final class GameViewModel: ObservableObject {
             }
             grid.append(rowCells)
         }
-        gameState.grid = grid
         
-        // Set game status
+        gameState.grid = grid
         gameState.gameStatus = .playing
         
-        // Set initial ball position
         gameState.ballPosition = currentLevel.initialBallPosition
         let (ballRow, ballCol) = gameState.ballPosition
         gameState.grid[ballRow][ballCol].state = .ball
         
-        // Set blocked cells
         for (row, col) in currentLevel.blockedCells {
             guard row >= 0 && row < GameConstants.gridRows,
                   col >= 0 && col < GameConstants.gridColumns else { continue }
@@ -60,10 +56,8 @@ final class GameViewModel: ObservableObject {
             return
         }
         
-        // Place barrier
         gameState.grid[position.row][position.column].state = .barrier
         
-        // Move ball
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.moveBall()
         }
@@ -99,57 +93,43 @@ final class GameViewModel: ObservableObject {
         guard gameState.gameStatus == .playing else { return }
         
         if let nextMove = findNextMove() {
-            // Update ball position
             let (currentRow, currentCol) = gameState.ballPosition
             gameState.grid[currentRow][currentCol].state = .empty
             
             gameState.ballPosition = nextMove
             gameState.grid[nextMove.row][nextMove.column].state = .ball
             
-            // Check if ball reached border
             if isBorderCell(nextMove) {
                 handleGameOver()
             }
         } else {
-            // No available moves - player wins
             handleLevelComplete()
         }
     }
     
     private func findNextMove() -> (row: Int, column: Int)? {
-        // Find path to nearest border using BFS
-        var queue: [(position: (row: Int, column: Int), path: [(row: Int, column: Int)])] = []
-        var visited = Set<String>()
+        let currentPosition = gameState.ballPosition
+        var availableMoves: [(row: Int, column: Int)] = []
         
-        queue.append((gameState.ballPosition, [gameState.ballPosition]))
-        visited.insert(positionKey(gameState.ballPosition))
-        
-        while !queue.isEmpty {
-            let current = queue.removeFirst()
-            let currentPosition = current.position
-            
-            // If we found a border cell, return the first step of the path
-            if isBorderCell(currentPosition) {
-                if current.path.count > 1 {
-                    return current.path[1]
-                }
-                return current.path[0]
-            }
-            
-            // Check all possible directions
-            for direction in Direction.allCases {
-                let nextPos = direction.nextPosition(from: currentPosition)
-                
-                if isValidMove(to: nextPos) && !visited.contains(positionKey(nextPos)) {
-                    var newPath = current.path
-                    newPath.append(nextPos)
-                    queue.append((nextPos, newPath))
-                    visited.insert(positionKey(nextPos))
-                }
+        for direction in Direction.allCases {
+            let nextPos = direction.nextPosition(from: currentPosition)
+            if isValidMove(to: nextPos) {
+                availableMoves.append(nextPos)
             }
         }
         
-        return nil // No path found
+        guard !availableMoves.isEmpty else { return nil }
+        
+        let movesToBorder = availableMoves.filter { isBorderCell($0) }
+        if !movesToBorder.isEmpty {
+            return movesToBorder[0]
+        }
+        
+        return availableMoves.min { pos1, pos2 in
+            let dist1 = distanceToBorder(pos1)
+            let dist2 = distanceToBorder(pos2)
+            return dist1 < dist2
+        }
     }
     
     // MARK: - Helper Functions
@@ -169,8 +149,10 @@ final class GameViewModel: ObservableObject {
         position.column == 0 || position.column == GameConstants.gridColumns - 1
     }
     
-    private func positionKey(_ position: (row: Int, column: Int)) -> String {
-        "\(position.row),\(position.column)"
+    private func distanceToBorder(_ position: (row: Int, column: Int)) -> Int {
+        let rowDist = min(position.row, GameConstants.gridRows - 1 - position.row)
+        let colDist = min(position.column, GameConstants.gridColumns - 1 - position.column)
+        return min(rowDist, colDist)
     }
     
     private func handleGameOver() {
