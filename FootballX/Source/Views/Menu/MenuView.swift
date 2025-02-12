@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct MenuView: View {
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var isSettings = false
+    private let settings = SettingsManager.shared
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
@@ -16,7 +20,7 @@ struct MenuView: View {
                 // Top bar elements
                 HStack {
                     Button {
-                        // open sheet SettingsView()
+                        isSettings.toggle()
                     } label: {
                         TopBarButton(name: "gearshape.fill")
                     }
@@ -82,8 +86,24 @@ struct MenuView: View {
                 }
                 .padding()
             }
+            .sheet(isPresented: $isSettings) {
+                SettingsView()
+            }
         }
         .navigationViewStyle(.stack)
+        .onAppear {
+            settings.playBackgroundMusic()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            switch newPhase {
+            case .active:
+                settings.playBackgroundMusic()
+            case .background, .inactive:
+                settings.stopBackgroundMusic()
+            @unknown default:
+                break
+            }
+        }
     }
 }
 
