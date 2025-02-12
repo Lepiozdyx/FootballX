@@ -13,8 +13,8 @@ final class ShopManager: ObservableObject {
     
     let skins: [FieldSkin] = [
         FieldSkin(id: 0, image: .field, price: 0, title: "CLASSIC"),
-        FieldSkin(id: 1, image: .field2, price: 10, title: "SEMI-PRO"),
-        FieldSkin(id: 2, image: .field3, price: 50, title: "PRO")
+        FieldSkin(id: 1, image: .field2, price: 50, title: "SEMI-PRO"),
+        FieldSkin(id: 2, image: .field3, price: 100, title: "PRO")
     ]
     
     @Published private(set) var purchasedSkinIds: Set<Int> {

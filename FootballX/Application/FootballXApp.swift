@@ -11,7 +11,7 @@ import SwiftUI
 struct FootballXApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
                 .preferredColorScheme(.light)
         }
     }

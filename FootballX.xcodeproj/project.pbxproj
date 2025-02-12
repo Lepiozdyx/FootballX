@@ -10,9 +10,22 @@
 		FA31B7D42D5A361C00EAE290 /* FootballX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FAA2E3CF2D5D569D00C48819 /* Exceptions for "FootballX" folder in "FootballX" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FA31B7D32D5A361C00EAE290 /* FootballX */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FA31B7D62D5A361C00EAE290 /* FootballX */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FAA2E3CF2D5D569D00C48819 /* Exceptions for "FootballX" folder in "FootballX" target */,
+			);
 			path = FootballX;
 			sourceTree = "<group>";
 		};
@@ -254,6 +267,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"FootballX/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FootballX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FootballX;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -288,6 +302,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"FootballX/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FootballX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FootballX;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
