@@ -29,6 +29,7 @@ struct PlayView: View {
                     
                     HStack(spacing: 8) {
                         Spacer()
+                        Spacer()
                         RectangleSubstrateView(
                             text: "Level \(viewModel.gameState.currentLevel)",
                             width: 140,

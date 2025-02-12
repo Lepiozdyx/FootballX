@@ -41,6 +41,7 @@ struct MenuView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 200)
+                                .shadow(color: .black, radius: 1, x: 1, y: 1)
                                 .overlay(alignment: .bottom) {
                                     Text("PLAY")
                                         .cFont(24)
@@ -55,6 +56,7 @@ struct MenuView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 200)
+                                .shadow(color: .black, radius: 1, x: 1, y: 1)
                                 .overlay(alignment: .bottom) {
                                     Text("SHOP")
                                         .cFont(24)
@@ -63,12 +65,13 @@ struct MenuView: View {
                         .buttonStyle(.plain)
 
                         NavigationLink {
-                            // InfoView()
+                             InfoView()
                         } label: {
                             Image(.infoCard)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 200)
+                                .shadow(color: .black, radius: 1, x: 1, y: 1)
                                 .overlay(alignment: .bottom) {
                                     Text("INFO")
                                         .cFont(24)

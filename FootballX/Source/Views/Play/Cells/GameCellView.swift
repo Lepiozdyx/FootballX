@@ -44,15 +44,16 @@ struct GameCellView: View {
                 Image(.ball)
                     .resizable()
                     .scaledToFit()
-                    .padding(4)
+                    .padding(2)
             }
         case .barrier:
             ZStack {
                 Circle()
                     .strokeBorder(Color.yellow1, lineWidth: 2)
                 Image(systemName: "xmark")
-                    .font(.system(size: size * 0.5, weight: .bold))
+                    .font(.system(size: size * 0.7, weight: .heavy))
                     .foregroundStyle(.yellow1)
+                    .shadow(color: .black, radius: 1, x: 1, y: 1)
             }
         }
     }
