@@ -14,7 +14,6 @@ struct InfoView: View {
         ZStack {
             BgView()
             
-            // Top bar elements
             VStack {
                 HStack {
                     Button {

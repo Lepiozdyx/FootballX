@@ -16,7 +16,6 @@ struct SettingsView: View {
         ZStack {
             BgView()
             
-            // Top bar elements
             VStack {
                 HStack {
                     Button {

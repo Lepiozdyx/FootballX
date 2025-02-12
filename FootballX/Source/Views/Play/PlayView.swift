@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct PlayView: View {
-    @StateObject private var viewModel = GameViewModel()
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = GameViewModel()
+    @ObservedObject var coinManager: CoinManager
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -36,7 +37,7 @@ struct PlayView: View {
                             height: 50
                         )
                         Spacer()
-                        CountView(number: viewModel.gameState.coins)
+                        CountView(number: coinManager.balance)
                     }
                 }
                 .padding([.horizontal, .top])
@@ -66,7 +67,7 @@ struct PlayView: View {
             if viewModel.isLevelComplete {
                 LevelCompleteView(
                     level: viewModel.gameState.currentLevel,
-                    coins: viewModel.gameState.coins,
+                    coins: coinManager.balance,
                     nextLevelAction: {viewModel.nextLevel()},
                     menuAction: {dismiss()}
                 )
@@ -86,5 +87,5 @@ struct PlayView: View {
 
 // MARK: - Preview
 #Preview {
-    PlayView()
+    PlayView(coinManager: CoinManager())
 }

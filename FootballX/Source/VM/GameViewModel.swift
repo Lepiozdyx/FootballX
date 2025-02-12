@@ -15,6 +15,7 @@ final class GameViewModel: ObservableObject {
     @Published var isPaused = false
     
     private var currentLevel: Level
+    private let coinManager = CoinManager.shared
     
     init(startLevel: Int = 1) {
         let savedLevel = max(1, UserProgress.currentLevel)
@@ -163,7 +164,6 @@ final class GameViewModel: ObservableObject {
     private func handleLevelComplete() {
         gameState.gameStatus = .won
         isLevelComplete = true
-        gameState.coins += currentLevel.coinsReward
-        UserProgress.coins = gameState.coins
+        coinManager.add(currentLevel.coinsReward)
     }
 }

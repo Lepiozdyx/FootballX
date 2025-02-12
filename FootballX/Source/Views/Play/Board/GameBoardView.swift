@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct GameBoardView: View {
+    @ObservedObject private var skinManager = ShopManager.shared
+    
     let grid: [[Cell]]
     let onCellTap: (Int, Int) -> Void
     
@@ -19,7 +21,7 @@ struct GameBoardView: View {
             let size = calculateBoardSize(from: geometry.size)
             
             ZStack {
-                Image(.field)
+                Image(skinManager.currentSkin.image)
                     .resizable()
                     .scaledToFit()
                     .frame(width: size.width, height: size.height)

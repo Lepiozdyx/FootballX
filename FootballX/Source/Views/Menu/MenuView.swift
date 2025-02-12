@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MenuView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var coinManager = CoinManager.shared
     @State private var isSettings = false
     private let settings = SettingsManager.shared
     
@@ -25,7 +26,8 @@ struct MenuView: View {
                         TopBarButton(name: "gearshape.fill")
                     }
                     Spacer()
-                    CountView(number: 100)
+                    // TODO: add number of coins
+                    CountView(number: coinManager.balance)
                 }
                 .padding()
                 
@@ -35,11 +37,11 @@ struct MenuView: View {
                     Image(.ballX)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 80)
+                        .frame(height: 70)
                     
                     HStack {
                         NavigationLink {
-                             PlayView()
+                            PlayView(coinManager: coinManager)
                         } label: {
                             Image(.playCard)
                                 .resizable()
@@ -54,7 +56,7 @@ struct MenuView: View {
                         .buttonStyle(.plain)
 
                         NavigationLink {
-                            // ShopView()
+                            ShopView(coinManager: coinManager)
                         } label: {
                             Image(.shopCard)
                                 .resizable()

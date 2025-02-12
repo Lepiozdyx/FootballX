@@ -118,6 +118,13 @@ enum Direction: CaseIterable {
     }
 }
 
+struct FieldSkin: Identifiable {
+    let id: Int
+    let image: ImageResource
+    let price: Int
+    let title: String
+}
+
 // MARK: - Constants
 struct GameConstants {
     static let gridRows = 7
