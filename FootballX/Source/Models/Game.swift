@@ -57,7 +57,7 @@ struct GameState {
         self.currentLevel = level
         self.coins = coins
         self.grid = GameState.createInitialGrid()
-        self.ballPosition = (3, 5) // Initial ball position
+        self.ballPosition = (3, 5)
         self.gameStatus = .playing
     }
     
@@ -84,36 +84,30 @@ enum GameStatus {
 
 // MARK: - Movement Direction
 enum Direction: CaseIterable {
-    case up
-    case upRight
+    case topLeft
+    case topRight
     case right
-    case downRight
-    case down
-    case downLeft
+    case bottomRight
+    case bottomLeft
     case left
-    case upLeft
     
     func nextPosition(from current: (row: Int, column: Int)) -> (row: Int, column: Int) {
         let (row, col) = current
         let isEvenRow = row % 2 == 0
         
         switch self {
-        case .up:
-            return (row - 1, col)
-        case .upRight:
-            return (row - 1, isEvenRow ? col + 1 : col)
+        case .topLeft:
+            return (row - 1, isEvenRow ? col - 1 : col)
+        case .topRight:
+            return (row - 1, isEvenRow ? col : col + 1)
         case .right:
             return (row, col + 1)
-        case .downRight:
-            return (row + 1, isEvenRow ? col + 1 : col)
-        case .down:
-            return (row + 1, col)
-        case .downLeft:
-            return (row + 1, isEvenRow ? col : col - 1)
+        case .bottomRight:
+            return (row + 1, isEvenRow ? col : col + 1)
+        case .bottomLeft:
+            return (row + 1, isEvenRow ? col - 1 : col)
         case .left:
             return (row, col - 1)
-        case .upLeft:
-            return (row - 1, isEvenRow ? col : col - 1)
         }
     }
 }
@@ -129,5 +123,25 @@ struct FieldSkin: Identifiable {
 struct GameConstants {
     static let gridRows = 7
     static let gridColumns = 11
+    
+    static let directionPriorities: [Direction] = [
+        .topLeft, .topRight,
+        .right,
+        .bottomRight, .bottomLeft,
+        .left
+    ]
 }
 
+// MARK: - Cell extension
+extension Cell {
+    func getValidNeighbors(in grid: [[Cell]]) -> [(row: Int, column: Int)] {
+        let currentPosition = (row: self.row, column: self.column)
+        return Direction.allCases
+            .map { $0.nextPosition(from: currentPosition) }
+            .filter { pos in
+                pos.row >= 0 && pos.row < GameConstants.gridRows &&
+                pos.column >= 0 && pos.column < GameConstants.gridColumns &&
+                grid[pos.row][pos.column].state == .empty
+            }
+    }
+}

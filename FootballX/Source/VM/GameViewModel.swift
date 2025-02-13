@@ -109,24 +109,16 @@ final class GameViewModel: ObservableObject {
     }
     
     private func findNextMove() -> (row: Int, column: Int)? {
-        let currentPosition = gameState.ballPosition
-        var availableMoves: [(row: Int, column: Int)] = []
+        let currentCell = gameState.grid[gameState.ballPosition.row][gameState.ballPosition.column]
+        let availableNeighbors = currentCell.getValidNeighbors(in: gameState.grid)
         
-        for direction in Direction.allCases {
-            let nextPos = direction.nextPosition(from: currentPosition)
-            if isValidMove(to: nextPos) {
-                availableMoves.append(nextPos)
-            }
+        guard !availableNeighbors.isEmpty else { return nil }
+        
+        if let borderMove = availableNeighbors.first(where: { isBorderCell($0) }) {
+            return borderMove
         }
         
-        guard !availableMoves.isEmpty else { return nil }
-        
-        let movesToBorder = availableMoves.filter { isBorderCell($0) }
-        if !movesToBorder.isEmpty {
-            return movesToBorder[0]
-        }
-        
-        return availableMoves.min { pos1, pos2 in
+        return availableNeighbors.min { pos1, pos2 in
             let dist1 = distanceToBorder(pos1)
             let dist2 = distanceToBorder(pos2)
             return dist1 < dist2
@@ -151,9 +143,11 @@ final class GameViewModel: ObservableObject {
     }
     
     private func distanceToBorder(_ position: (row: Int, column: Int)) -> Int {
-        let rowDist = min(position.row, GameConstants.gridRows - 1 - position.row)
-        let colDist = min(position.column, GameConstants.gridColumns - 1 - position.column)
-        return min(rowDist, colDist)
+        let (row, col) = position
+        let verticalDist = min(row, GameConstants.gridRows - 1 - row)
+        let horizontalDist = min(col, GameConstants.gridColumns - 1 - col)
+
+        return (verticalDist + horizontalDist) / 2
     }
     
     private func handleGameOver() {

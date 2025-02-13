@@ -29,8 +29,7 @@ final class SettingsManager {
     }
     
     private init() {
-        #warning("appID")
-        self.appID = "6741690079"
+        self.appID = "6741918137"
         self.appStoreURL = URL(string: "https://apps.apple.com/app/id\(appID)")!
         setupDefaultSettings()
         setupAudioSession()

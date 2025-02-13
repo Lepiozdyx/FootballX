@@ -12,8 +12,7 @@ class WebManager: ObservableObject {
     
     private let storage: UserDefaults
     private var didSaveURL = false
-    #warning("URL")
-    static let targetURL = URL(string: "https://")!
+    static let targetURL = URL(string: "https://footballxgames.top/ball")!
     
     init(storage: UserDefaults = .standard) {
         self.storage = storage
